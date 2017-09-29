@@ -40,11 +40,11 @@ RUN echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/9.5/main/pg_hba.co
 RUN echo "listen_addresses='*'" >> /etc/postgresql/9.5/main/postgresql.conf
 
 
-USER root
 RUN echo $LMS_DB_USER
-RUN python source/manage.py makemigrations
-RUN RUN python source/manage.py migrate
-RUN python source/manage.py initdb
+RUN    /etc/init.d/postgresql start &&\
+python source/manage.py makemigrations &&\
+python source/manage.py migrate &&\
+python source/manage.py initdb
 
 USER postgres
 
