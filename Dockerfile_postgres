@@ -20,6 +20,8 @@ RUN mkdir -p /sites
 ADD ./xiaogu-tech-laioffer-lms-v1.0.0929.tar.gz /sites/$SITENAME
 WORKDIR /sites/$SITENAME
 
+RUN pip install -r deploy_tools/requirements/staging.txt
+ENV DJANGO_SETTINGS_MODULE=config.settings_staging
 
 USER postgres
 RUN    /etc/init.d/postgresql start &&\
@@ -36,6 +38,10 @@ RUN echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/9.5/main/pg_hba.co
 
 # And add ``listen_addresses`` to ``/etc/postgresql/9.5/main/postgresql.conf``
 RUN echo "listen_addresses='*'" >> /etc/postgresql/9.5/main/postgresql.conf
+
+
+USER root
+RUN python source/manage.py initdb
 
 
 EXPOSE 5432
