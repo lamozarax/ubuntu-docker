@@ -1,8 +1,24 @@
 FROM ubuntu:16.04
 MAINTAINER lamozarax dev@xiaogu-tech.com
 
-RUN apt-get update
-RUN apt-get install -y postgresql postgresql-contrib vim
+RUN apt-get update \
+    && apt-get install -y nginx git postgresql postgresql-contrib python3 python3-pip ssh vim tzdata \
+    && apt-get clean
+
+RUN locale-gen en_US en_US.UTF-8
+ENV LC_ALL="en_US.UTF-8"
+RUN echo America/Los_Angeles | tee /etc/timezone && dpkg-reconfigure --frontend noninteractive tzdata
+
+RUN ln -s /usr/bin/python3 /usr/bin/python
+RUN ln -s /usr/bin/pip3 /usr/bin/pip
+RUN pip install --upgrade pip
+
+ENV SITENAME=learning.laioffer.com
+ARG SITENAME=learning.laioffer.com
+
+# RUN mkdir -p /sites
+# COPY ./xiaogu-tech-laioffer-lms-v1.0.0929.zip /sites/$SITENAME
+# WORKDIR /sites/$SITENAME
 
 
 USER postgres
