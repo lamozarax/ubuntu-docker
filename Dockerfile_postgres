@@ -41,8 +41,12 @@ RUN echo "listen_addresses='*'" >> /etc/postgresql/9.5/main/postgresql.conf
 
 
 USER root
-# RUN python source/manage.py initdb
+RUN echo $LMS_DB_USER
+RUN python source/manage.py makemigrations
+RUN RUN python source/manage.py migrate
+RUN python source/manage.py initdb
 
+USER postgres
 
 EXPOSE 5432
 CMD ["/usr/lib/postgresql/9.5/bin/postgres", "-D", "/var/lib/postgresql/9.5/main", "-c", "config_file=/etc/postgresql/9.5/main/postgresql.conf"]
