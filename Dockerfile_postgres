@@ -41,6 +41,12 @@ RUN echo "listen_addresses='*'" >> /etc/postgresql/9.5/main/postgresql.conf
 
 USER root
 
+ENV LMS_DB_HOST=localhost
+ENV LMS_DB_PORT=
+ENV LMS_DB_NAME=lms
+ENV LMS_DB_USER=lmsuser
+ENV LMS_DB_PWD=password
+
 RUN echo $LMS_DB_USER
 RUN    /etc/init.d/postgresql start &&\
 python source/manage.py makemigrations &&\
